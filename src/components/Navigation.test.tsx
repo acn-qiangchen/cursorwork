@@ -12,13 +12,20 @@ jest.mock('next/link', () => {
 // Mock framer-motion
 jest.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, ...props }: any) => {
-      const { animate } = props
+    div: function MotionDiv(props: {
+      children?: React.ReactNode
+      className?: string
+      'data-testid'?: string
+      animate?: { opacity: number }
+      initial?: { opacity: number; height: number | string }
+      transition?: { duration: number }
+    }) {
+      const { children, className, 'data-testid': dataTestId, animate } = props
       return (
         <div
-          data-testid={props['data-testid']}
+          data-testid={dataTestId}
           style={{ opacity: animate?.opacity }}
-          className={props.className}
+          className={className}
         >
           {children}
         </div>
